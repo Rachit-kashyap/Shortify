@@ -7,7 +7,7 @@ const app = express();
 const PORT = process.env.PORT||8000;
 console.log(process.env.FRONTEND_URL);
 
-app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true , methods:["post","get"]}));
+app.use(cors({ origin: "https://jocular-sawine-ccee80.netlify.app", credentials: true , methods:["post","get"]}));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
