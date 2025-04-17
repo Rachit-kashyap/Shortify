@@ -5,6 +5,7 @@ const cors = require("cors");
 require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT||8000;
+console.log(process.env.FRONTEND_URL);
 
 app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true , methods:["post","get"]}));
 
