@@ -37,8 +37,9 @@ app.post("/api/v1/short-url", async (req, res) => {
     let isexist = await Link.findOne({ newUrl: newUrlgenerate });
     while (isexist) {
       newUrlgenerate = generateRandomString();
-      isexist = await EarnLink.findOne({ newUrl: newUrlgenerate });
+      isexist = await Link.findOne({ newUrl: newUrlgenerate }); // ✅ correct
     }
+    
 
 
  
@@ -77,5 +78,5 @@ return res.status(400).json({
 
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on :${PORT}`);
 });
