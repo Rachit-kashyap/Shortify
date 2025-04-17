@@ -6,7 +6,7 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT||8000;
 
-app.use(cors({ origin: process.env.FRONTEND_PORT, credentials: true , methods:["post","get"]}));
+app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true , methods:["post","get"]}));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
