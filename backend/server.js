@@ -143,6 +143,7 @@ app.get('/visit', (req, res) => {
   const data = readVisits();
   data.visits += 1;
   writeVisits(data);
+console.log(data);
 
   res.json({ success: true, visits: data.visits });
 });
