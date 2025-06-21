@@ -60,7 +60,7 @@ app.post('/shorten', (req, res) => {
 });
 
 // Redirect
-app.get('/:id', (req, res) => {
+app.get('https://shortify-qph7.onrender.com/:id', (req, res) => {
   const { id } = req.params;
   const data = readData();
 
