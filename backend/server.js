@@ -66,6 +66,7 @@ app.get('/:id', (req, res) => {
 
   const originalUrl = data[id];
 console.log("new key come ",id);
+console.log(data);
 
   if (originalUrl) {
     console.log("original url ",originalUrl);
