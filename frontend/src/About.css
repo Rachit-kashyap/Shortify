@@ -1,0 +1,22 @@
+.about-container {
+  background-color: #1e0033;
+  color: #ffffff;
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+}
+
+.about-title {
+  font-size: 2.5rem;
+  color: #bb86fc;
+  text-shadow: 0 0 12px #bb86fc;
+  margin-bottom: 1rem;
+}
+
+.about-text {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  color: #ddd;
+}

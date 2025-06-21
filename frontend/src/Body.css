@@ -1,0 +1,147 @@
+/* Global styles */
+body {
+  background-color: #1e0033;
+  color: #fff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Center container */
+.body-container {
+  max-width: 90%;
+  width: 600px;
+  margin: auto;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+/* Heading */
+.title {
+  font-size: 2.8rem;
+  color: #bb86fc;
+  text-shadow: 0 0 15px #bb86fc;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #ccc;
+  margin-bottom: 2rem;
+}
+
+/* Input and button as a group */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  max-width: 500px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid #bb86fc;
+  background: #2a004d;
+  color: #fff;
+  box-shadow: 0 0 12px #bb86fc66;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #d1a4ff;
+  box-shadow: 0 0 20px #bb86fc99;
+}
+
+.button {
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  background: #bb86fc;
+  color: #1e0033;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 18px #bb86fc;
+}
+
+.button:hover {
+  background: #d1a4ff;
+  box-shadow: 0 0 25px #bb86fc;
+}
+
+/* Message Box */
+.message {
+  margin-top: 1.5rem;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 1rem;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.message.success {
+  color: #00e676;
+  text-shadow: 0 0 6px #00e676;
+}
+
+.message.error {
+  color: #ff1744;
+  text-shadow: 0 0 6px #ff1744;
+}
+
+/* Short URL Display */
+.short-url {
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+  color: #80d8ff;
+  text-shadow: 0 0 8px #80d8ff;
+  word-wrap: break-word;
+}
+
+.short-url a {
+  color: #80d8ff;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+/* Responsive behavior */
+@media (max-width: 500px) {
+  .title {
+    font-size: 2rem;
+  }
+
+  .input {
+    font-size: 0.95rem;
+  }
+
+  .button {
+    width: 100%;
+  }
+
+  .short-url {
+    font-size: 1rem;
+  }
+}
+.copy-button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  background-color: #4caf50;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.copy-button:hover {
+  background-color: #388e3c;
+}
