@@ -1,80 +1,124 @@
-const express = require("express");
-const Link = require("./Database/link-model"); 
-const db = require("./Database/db");
-const cors = require("cors");
-
+const express = require('express');
+const fs = require('fs');
+const cors = require('cors');
+const path = require('path');
+require("dotenv").config()
 const app = express();
+const PORT = 5000;
+const dataPath = path.join(__dirname, 'data.json');
+const contactFilePath = path.join(__dirname, 'contact.json');
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true , methods:["post","get"]}));
+const express = require('express');
+const cors = require('cors');
 
-app.use(express.urlencoded({ extended: true }));
+
+const corsOptions = {
+  origin: ['http://localhost:5173', 'https://gleaming-starship-0d78b7.netlify.app'],
+  methods: ['GET', 'POST', 'OPTIONS']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 
+app.use(express.json());
 
-
-function generateRandomString() {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    const length = Math.floor(Math.random() * 3) + 6; // Random length between 6 and 8
-    let result = "";
-    for (let i = 0; i < length; i++) {
-        result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
+function readData() {
+  if (!fs.existsSync(dataPath)) fs.writeFileSync(dataPath, '{}');
+  return JSON.parse(fs.readFileSync(dataPath, 'utf-8'));
 }
 
-app.post("/api/v1/short-url", async (req, res) => {
-  try {
+function writeData(data) {
+  fs.writeFileSync(dataPath, JSON.stringify(data, null, 2));
+}
 
-    let link = req.body.url;
-    if(!link)
-    {
-      return res.status(400).json({success:false,message:"enter a linnk"})
-    }
-    let newUrlgenerate = generateRandomString();
+function generateKey(existing) {
+  const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_@#%';
+  let key;
+  do {
+    key = Array.from({ length: 8 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+  } while (existing[key]);
+  return key;
+}
 
-    let isexist = await Link.findOne({ newUrl: newUrlgenerate });
-    while (isexist) {
-      newUrlgenerate = generateRandomString();
-      isexist = await EarnLink.findOne({ newUrl: newUrlgenerate });
-    }
+app.post('/shorten', (req, res) => {
+  const { url } = req.body;
 
+  if (!url || (!url.startsWith('http://') && !url.startsWith('https://'))) {
+    return res.status(400).json({ success: false, message: 'Invalid URL' });
+  }
 
- 
+  const data = readData();
 
-    let saveUrl = new Link({
-      url: link,
-      newUrl: newUrlgenerate,
-    });
+  // Always generate a new key, even if the URL exists
+  const newKey = generateKey(data);
+  data[newKey] = url;
+  writeData(data);
 
-    await saveUrl.save();
+  return res.json({
+    success: true,
+    shortUrl: `https://shortify-qph7.onrender.com/${newKey}`,
+    length: `${Object.keys(data).length}`
+  });
+});
 
-    res.status(201).json({ success: true, shortenedUrl: newUrlgenerate });
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+app.get('/:id', (req, res) => {
+  const { id } = req.params;
+  const data = readData();
+
+  const originalUrl = data[id];
+
+  if (originalUrl) {
+    return res.redirect(originalUrl); 
+  } else {
+    return res.status(404).send('URL not found');
   }
 });
 
+app.get("/",(req,res)=>{
+    const data = readData();
+    if(Object.keys(data).length==0)
+    {
+     return res.json({ success: true,length:0 }); 
+    }
+ return res.json({ success: true,length:`${Object.keys(data).length}` });
+})
 
-
-
-app.get("/api/v1/:url",async(req,res)=>{
-let existUrl = await Link.findOne({newUrl : req.params.url});
-if(existUrl)
-{
-    return res.status(200).redirect(`${existUrl.url}`);
+function ensureContactFile() {
+  if (!fs.existsSync(contactFilePath)) {
+    fs.writeFileSync(contactFilePath, '[]');
+  }
 }
-return res.status(400).json({
-    success:false,
-    message:"invalid url",
 
-})
-})
+function readContacts() {
+  ensureContactFile();
+  return JSON.parse(fs.readFileSync(contactFilePath, 'utf-8'));
+}
 
+function writeContacts(data) {
+  fs.writeFileSync(contactFilePath, JSON.stringify(data, null, 2));
+}
 
+app.post('/contact', (req, res) => {
+  const { name, email, message } = req.body;
 
-const PORT = 3000;
+  if (!name || !email || !message) {
+    return res.status(400).json({ success: false, message: 'Name, email, and message are required.' });
+  }
+
+  const contacts = readContacts();
+  const newContact = {
+    name,
+    email,
+    message,
+    timestamp: new Date().toISOString()
+  };
+
+  contacts.push(newContact);
+  writeContacts(contacts);
+
+  res.status(201).json({ success: true, message: 'Contact saved successfully.' });
+});
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server running on https://shortify-qph7.onrender.com`);
 });
