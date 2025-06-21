@@ -60,13 +60,16 @@ app.post('/shorten', (req, res) => {
 });
 
 // Redirect
-app.get('https://shortify-qph7.onrender.com/:id', (req, res) => {
+app.get('/:id', (req, res) => {
   const { id } = req.params;
   const data = readData();
 
   const originalUrl = data[id];
+console.log("new key come ",id);
 
   if (originalUrl) {
+    console.log("original url ",originalUrl);
+    
     return res.redirect(originalUrl);
   } else {
     return res.status(404).send('URL not found');
