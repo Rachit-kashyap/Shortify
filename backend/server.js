@@ -8,8 +8,6 @@ const PORT = 5000;
 const dataPath = path.join(__dirname, 'data.json');
 const contactFilePath = path.join(__dirname, 'contact.json');
 
-const express = require('express');
-const cors = require('cors');
 
 
 const corsOptions = {
