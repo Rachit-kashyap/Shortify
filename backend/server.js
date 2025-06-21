@@ -13,7 +13,7 @@ const contactFilePath = path.join(__dirname, 'contact.json');
 
 // Allow only specific origins and methods
 const corsOptions = {
-  origin: ['http://localhost:5173', 'https://gleaming-starship-0d78b7.netlify.app'],
+origin: 'https://gleaming-starship-0d78b7.netlify.app',
   methods: ['GET', 'POST', 'OPTIONS'],
 };
 
