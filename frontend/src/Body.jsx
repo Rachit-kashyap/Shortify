@@ -5,6 +5,7 @@ function Body() {
   const [inputUrl, setInputUrl] = useState('');
   const [message, setMessage] = useState({ text: '', type: '' });
   const [shortUrl, setShortUrl] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleBtn = async () => {
     setMessage({ text: '', type: '' });
@@ -15,18 +16,19 @@ function Body() {
       return;
     }
 
-    if (!(inputUrl.startsWith('http://') || inputUrl.startsWith('http://'))) {
-      setMessage({ text: 'Please enter a valid URL (http/http).', type: 'error' });
+    if (!(inputUrl.startsWith('http://') || inputUrl.startsWith('https://'))) {
+      setMessage({ text: 'Please enter a valid URL (starting with http/https).', type: 'error' });
       return;
     }
 
     if (inputUrl.length <= 8 || inputUrl.length > 400) {
-      setMessage({ text: 'Something went wrong with the URL length.', type: 'error' });
+      setMessage({ text: 'URL length seems invalid.', type: 'error' });
       return;
     }
 
+    setLoading(true);
     try {
-      const response = await fetch('http://shortify-qph7.onrender.com/shorten', {
+      const response = await fetch('https://shortify-qph7.onrender.com/shorten', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: inputUrl }),
@@ -35,15 +37,16 @@ function Body() {
       const data = await response.json();
       if (data.success) {
         setShortUrl(data.shortUrl);
-        localStorage.setItem("length",0);
-        localStorage.removeItem("length");
-        localStorage.setItem("length",data.length);
+        localStorage.setItem('length', data.length);
         setMessage({ text: 'URL shortened successfully!', type: 'success' });
       } else {
         setMessage({ text: data.message || 'Failed to shorten URL.', type: 'error' });
       }
     } catch (error) {
-      setMessage({ text: 'Server error. Please try again.', type: 'error' });
+      console.error(error);
+      setMessage({ text: 'Server error. Please try again later.', type: 'error' });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -51,16 +54,18 @@ function Body() {
     <div className="body-container">
       <h1 className="title">🔗 URL Shortener</h1>
       <p className="subtitle">Paste a long URL and get a clean, short link instantly.</p>
-      
+
       <div className="input-group">
         <input
           type="url"
           value={inputUrl}
           onChange={(e) => setInputUrl(e.target.value)}
           className="input"
-          placeholder="e.g. http://example.com/very/long/path"
+          placeholder="e.g. https://example.com/very/long/path"
         />
-        <button onClick={handleBtn} className="button">Shorten</button>
+        <button onClick={handleBtn} className="button" disabled={loading}>
+          {loading ? 'Shortening...' : 'Shorten'}
+        </button>
       </div>
 
       {message.text && (
@@ -68,23 +73,22 @@ function Body() {
       )}
 
       {shortUrl && (
-  <div className="short-url">
-    🔍 Short URL:&nbsp;
-    <a href={shortUrl} target="_blank" rel="noopener noreferrer">
-      {shortUrl}
-    </a>
-    <button
-      className="copy-button"
-      onClick={() => {
-        navigator.clipboard.writeText(shortUrl);
-        setMessage({ text: 'Short URL copied to clipboard!', type: 'success' });
-      }}
-    >
-      📋 Copy
-    </button>
-  </div>
-)}
-
+        <div className="short-url">
+          🔍 Short URL:&nbsp;
+          <a href={shortUrl} target="_blank" rel="noopener noreferrer">
+            {shortUrl}
+          </a>
+          <button
+            className="copy-button"
+            onClick={() => {
+              navigator.clipboard.writeText(shortUrl);
+              setMessage({ text: 'Short URL copied to clipboard!', type: 'success' });
+            }}
+          >
+            📋 Copy
+          </button>
+        </div>
+      )}
     </div>
   );
 }
