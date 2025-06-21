@@ -120,35 +120,7 @@ app.post('/contact', (req, res) => {
 
   res.status(201).json({ success: true, message: 'Contact saved successfully.' });
 });
-// Visit file utilities
-const visitFilePath = path.join(__dirname, 'visit.json');
 
-function ensureVisitFile() {
-  if (!fs.existsSync(visitFilePath)) {
-    fs.writeFileSync(visitFilePath, JSON.stringify({ visits: 0 }, null, 2));
-  }
-}
-
-function readVisits() {
-  ensureVisitFile();
-  return JSON.parse(fs.readFileSync(visitFilePath, 'utf-8'));
-}
-
-function writeVisits(data) {
-  fs.writeFileSync(visitFilePath, JSON.stringify(data, null, 2));
-}
-
-// Visit route
-app.get('/visit', (req, res) => {
-  const data = readVisits();
-  data.visits += 1;
-  writeVisits(data);
-console.log(data);
-
-  res.json({ success: true, visits: data.visits });
-});
-
-// Server start
 app.listen(PORT, () => {
   console.log(`✅ Server running on http://localhost:${PORT} OR https://shortify-qph7.onrender.com`);
 });

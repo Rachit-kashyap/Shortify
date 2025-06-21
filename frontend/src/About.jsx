@@ -5,7 +5,7 @@ import Footer from './Footer';
 
 function About() {
   const [length, setLength] = useState(null);
-  const [visit, setVisit] = useState(null);
+  const [visit, setvisit] = useState(null);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -36,26 +36,6 @@ function About() {
     fetchLength();
   }, []);
 
-  // 👇 Call /visit and update state
-  useEffect(() => {
-    const fetchVisits = async () => {
-      try {
-        const response = await fetch('https://shortify-qph7.onrender.com/visit');
-        const data = await response.json();
-        if (data.success) {
-          setVisit(data.visits);
-        } else {
-          throw new Error('Invalid visit response');
-        }
-      } catch (err) {
-        console.error('Error fetching visits:', err);
-        setVisit(null); // optional: set as "N/A" or similar if error
-      }
-    };
-
-    fetchVisits();
-  }, []);
-
   return (
     <>
       <Header />
@@ -66,7 +46,7 @@ function About() {
           <strong>
             {error
               ? 'Unable to fetch the total URLs at the moment.'
-              : `We have shortened ${length ?? '...'} URLs. And have ${visit ?? '...'} visitors.`}
+              : `We have shortened ${length ?? '...'} URLs. And Have ${visit} visitors`}
           </strong>
         </p>
         <p className="about-text">
