@@ -15,8 +15,8 @@ function Body() {
       return;
     }
 
-    if (!(inputUrl.startsWith('http://') || inputUrl.startsWith('https://'))) {
-      setMessage({ text: 'Please enter a valid URL (http/https).', type: 'error' });
+    if (!(inputUrl.startsWith('http://') || inputUrl.startsWith('http://'))) {
+      setMessage({ text: 'Please enter a valid URL (http/http).', type: 'error' });
       return;
     }
 
@@ -26,7 +26,7 @@ function Body() {
     }
 
     try {
-      const response = await fetch('https://shortify-qph7.onrender.com/shorten', {
+      const response = await fetch('http://shortify-qph7.onrender.com/shorten', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: inputUrl }),
@@ -58,7 +58,7 @@ function Body() {
           value={inputUrl}
           onChange={(e) => setInputUrl(e.target.value)}
           className="input"
-          placeholder="e.g. https://example.com/very/long/path"
+          placeholder="e.g. http://example.com/very/long/path"
         />
         <button onClick={handleBtn} className="button">Shorten</button>
       </div>

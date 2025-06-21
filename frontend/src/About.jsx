@@ -9,7 +9,7 @@ function About() {
   useEffect(() => {
     const fetchLength = async () => {
       try {
-        const response = await fetch('https://shortify-qph7.onrender.com', {
+        const response = await fetch('http://shortify-qph7.onrender.com', {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' }
         });

@@ -27,7 +27,7 @@ function Contact() {
 if(!formData.name || !formData.email || !formData.message) return setStatus("Please Enter Field");  
 if(!(formData.email.includes("@"))) return setStatus("Please Enter Valid email");  
     try {
-      const response = await axios.post('https://shortify-qph7.onrender.com/contact', formData);
+      const response = await axios.post('http://shortify-qph7.onrender.com/contact', formData);
       setStatus('Message sent successfully!');
       setFormData({ name: '', email: '', message: '' });
     } catch (err) {

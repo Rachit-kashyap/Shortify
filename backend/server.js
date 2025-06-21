@@ -11,7 +11,7 @@ const contactFilePath = path.join(__dirname, 'contact.json');
 
 
 const corsOptions = {
-  origin: ['http://localhost:5173', 'https://gleaming-starship-0d78b7.netlify.app'],
+  origin: ['http://localhost:5173', 'http://gleaming-starship-0d78b7.netlify.app'],
   methods: ['GET', 'POST', 'OPTIONS']
 };
 
@@ -42,7 +42,7 @@ function generateKey(existing) {
 app.post('/shorten', (req, res) => {
   const { url } = req.body;
 
-  if (!url || (!url.startsWith('http://') && !url.startsWith('https://'))) {
+  if (!url || (!url.startsWith('http://') && !url.startsWith('http://'))) {
     return res.status(400).json({ success: false, message: 'Invalid URL' });
   }
 
@@ -55,7 +55,7 @@ app.post('/shorten', (req, res) => {
 
   return res.json({
     success: true,
-    shortUrl: `https://shortify-qph7.onrender.com/${newKey}`,
+    shortUrl: `http://shortify-qph7.onrender.com/${newKey}`,
     length: `${Object.keys(data).length}`
   });
 });
@@ -118,5 +118,5 @@ app.post('/contact', (req, res) => {
   res.status(201).json({ success: true, message: 'Contact saved successfully.' });
 });
 app.listen(PORT, () => {
-  console.log(`Server running on https://shortify-qph7.onrender.com`);
+  console.log(`Server running on http://shortify-qph7.onrender.com`);
 });
