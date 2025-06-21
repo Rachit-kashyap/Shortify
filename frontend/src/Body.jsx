@@ -1,12 +1,18 @@
 import React, { useState } from 'react';
 import './Body.css';
+import { useEffect } from 'react';
 
 function Body() {
   const [inputUrl, setInputUrl] = useState('');
   const [message, setMessage] = useState({ text: '', type: '' });
   const [shortUrl, setShortUrl] = useState('');
   const [loading, setLoading] = useState(false);
-
+useEffect(() => {
+  fetch('https://shortify-qph7.onrender.com/visit')
+    .then(res => res.json())
+    .then(data => console.log(data.message))
+    .catch(err => console.error('Visit tracking failed:', err));
+}, []);
   const handleBtn = async () => {
     setMessage({ text: '', type: '' });
     setShortUrl('');
